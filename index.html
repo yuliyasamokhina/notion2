@@ -1,221 +1,357 @@
 <html>
   <head>
   <style>
-  @import url("https://fonts.googleapis.com/css?family=Poppins:300,500&display=swap");
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+html, body{
+  height:100vh;
+  background-color:grey;
+  display:flex;
+  flex-direction: column;
 }
 
-::selection {
-  background: none;
-}
-
-body {
-	background-color: #3fa9fc;
+body{
+  display:flex;
+  align-items: center;
 }
 
 #app {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	width: 100vw;
+  background-color: white;
+  height:200px;
+  display:flex;
+  width:280px;
+  justify-content:center
 }
 
-.calculator {
-	display: grid;
-	grid-template-rows: repeat(7, minmax(60px, auto));
-	grid-template-columns: repeat(4, 60px);
-	grid-gap: 12px;
-	padding: 35px;
-	font-family: "Poppins";
-	font-weight: 300;
+.calc {
+  display:flex;
+  width:281px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0px;
+  position:relative;
+  z-index:1; 
+  background-color:#424654;
+  opacity: 0.97;
+
+}
+
+.filter {
+  display:flex;
+  width:280px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0px;
+  background-color:white;
+  position:relative;
+  z-index:2;  
+}
+
+button {
+  margin: 10px;
+  width:50px;
+  height: 40px;
+  border-radius: 0px;
+  border: none;
+  background:none;
+  color: white;
+  font-family: roboto;
+  font-size:20px;
+}
+
+button:hover {
+  cursor:pointer;
+}
+
+.pad {
+  display:flex;
+  flex-direction:column;
+  width:330px;
+  align-items:center;
+}
+
+.display{
+  text-align:right;
+  margin: 0px 0px 10px 45px;
   font-size: 18px;
-	background-color: #ffffff;
-	border-radius: 10px;
-	box-shadow: 0px 3px 80px -30px rgba(13, 81, 134, 1);
+  font-family: Roboto;
+  overflow: hidden;
+  width: 250px;
 }
 
-.btn,
-.zero {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
-	outline: none;
-	color: #484848;
-	background-color: #f4faff;
-	border-radius: 5px;
+.result {
+  text-align:right;
+  margin: 10px 35px 5px;
+  font-size: 40px;
+  font-family: Roboto;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.display,
-.answer {
-	grid-column: 1 / 5;
-	display: flex;
-	align-items: center;
+.dec{
+  margin-top: 4px;
+  font-size: 20px;
 }
 
-.display {
-	color: #a3a3a3;
-	border-bottom: 1px solid #e1e1e1;
-	margin-bottom: 15px;
-	overflow: hidden;
-	text-overflow: clip;
+.return {
+  background-color:#F28A4F;
+  height:60px;
+  width:280px;
+  margin: 0px;
+  z-index:1;
+  font-size: 30px;
+
 }
 
-.answer {
-	font-weight: 500;
-	color: #146080;
-	font-size: 55px;
-	height: 65px;
+.lastrow {
+  display:flex;
+  justify-content:flex-end;
+  margin-right: 50px;
+  width:100%;
 }
 
-.zero {
-	grid-column: 1 / 3;
+h1{
+  font-family:roboto;
+  color: white;
 }
 
-.operator {
-	background-color: #d9efff;
-	color: #3fa9fc;
+
+.footer {
+  margin-top: 20px;
+  color: white;
+  font-family:roboto; 
+  text-align:center;
+}
+
+.afterpad{
+  background-color: blue;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  width:330px;
+  background-color:#424654;
+  box-shadow: 4px 4px 10px -2px #000000;
 }
   </style>
   </head>
   <body>
-    <div id="app">
-			<div class="container">
-				<div class="calculator">
-					<div class="answer">{{ answer }}</div>
-					<div class="display">{{ logList + current }}</div>
-					<div @click="clear" id="clear" class="btn operator">C</div>
-					<div @click="sign" id="sign" class="btn operator">+/-</div>
-					<div @click="percent" id="percent" class="btn operator">
-						%
-					</div>
-					<div @click="divide" id="divide" class="btn operator">
-						/
-					</div>
-					<div @click="append('7')" id="n7" class="btn">7</div>
-					<div @click="append('8')" id="n8" class="btn">8</div>
-					<div @click="append('9')" id="n9" class="btn">9</div>
-					<div @click="times" id="times" class="btn operator">*</div>
-					<div @click="append('4')" id="n4" class="btn">4</div>
-					<div @click="append('5')" id="n5" class="btn">5</div>
-					<div @click="append('6')" id="n6" class="btn">6</div>
-					<div @click="minus" id="minus" class="btn operator">-</div>
-					<div @click="append('1')" id="n1" class="btn">1</div>
-					<div @click="append('2')" id="n2" class="btn">2</div>
-					<div @click="append('3')" id="n3" class="btn">3</div>
-					<div @click="plus" id="plus" class="btn operator">+</div>
-					<div @click="append('0')" id="n0" class="zero">0</div>
-					<div @click="dot" id="dot" class="btn">.</div>
-					<div @click="equal" id="equal" class="btn operator">=</div>
-				</div>
-			</div>
-		</div>
+<div id="app"></div>
   </body>
   <script>
-  new Vue({
-				el: "#app",
-				data() {
-					return {
-						logList: "",
-						current: "",
-						answer: "",
-						operatorClicked: true
-					};
-				},
-				methods: {
-					append(number) {
-						if (this.operatorClicked) {
-							this.current = "";
-							this.operatorClicked = false;
-						}
-						this.animateNumber(`n${number}`);
-						this.current = `${this.current}${number}`;
-					},
-					addtoLog(operator) {
-						if (this.operatorClicked == false) {
-							this.logList += `${this.current} ${operator} `;
-							this.current = "";
-							this.operatorClicked = true;
-						}
-					},
-					animateNumber(number) {
-						let tl = anime.timeline({
-							targets: `#${number}`,
-							duration: 250,
-							easing: "easeInOutCubic"
-						});
-						tl.add({ backgroundColor: "#c1e3ff" });
-						tl.add({ backgroundColor: "#f4faff" });
-					},
-					animateOperator(operator) {
-						let tl = anime.timeline({
-							targets: `#${operator}`,
-							duration: 250,
-							easing: "easeInOutCubic"
-						});
-						tl.add({ backgroundColor: "#a6daff" });
-						tl.add({ backgroundColor: "#d9efff" });
-					},
-					clear() {
-						this.animateOperator("clear");
-						this.current = "";
-						this.answer = "";
-						this.logList = "";
-						this.operatorClicked = false;
-					},
-					sign() {
-						this.animateOperator("sign");
-						if (this.current != "") {
-							this.current =
-								this.current.charAt(0) === "-"
-									? this.current.slice(1)
-									: `-${this.current}`;
-						}
-					},
-					percent() {
-						this.animateOperator("percent");
-						if (this.current != "") {
-							this.current = `${parseFloat(this.current) / 100}`;
-						}
-					},
-					dot() {
-						this.animateNumber("dot");
-						if (this.current.indexOf(".") === -1) {
-							this.append(".");
-						}
-					},
-					divide() {
-						this.animateOperator("divide");
-						this.addtoLog("/");
-					},
-					times() {
-						this.animateOperator("times");
-						this.addtoLog("*");
-					},
-					minus() {
-						this.animateOperator("minus");
-						this.addtoLog("-");
-					},
-					plus() {
-						this.animateOperator("plus");
-						this.addtoLog("+");
-					},
-					equal() {
-						this.animateOperator("equal");
-						if (this.operatorClicked == false) {
-							this.answer = eval(this.logList + this.current);
-						} else {
-							this.answer = "WHAT?!!";
-						}
-					}
-				}
-			});
+var Calc = React.createClass({
+   
+  getInitialState: function(){
+      return {
+        display: 0,
+        result: 0,
+        decimals: ".00"
+      }
+    },
+  
+  setResult: function(updates){
+    this.setState(updates)
+  },
+  
+  render: function(){
+    var result = this.state.result;
+    var display = this.state.display;
+    var decimals = this.state.decimals;
+    
+    return(
+      <div>
+        <Result result={result} decimals={decimals}/>
+      <Display display={display} />
+        <Nums setResult={this.setResult}/>
+        <Footer />
+        </div>
+    )
+  }
+});
+
+var op = []; //array for storing numbers
+var decimal = true; // to access decimal dot
+
+var Nums = React.createClass({
+   
+  pusher: function (event) { //will add the button value to op
+   event.preventDefault();
+     var num = event.target.value;
+     
+     if (op.length <=23) {
+     op += num;       
+      this.props.setResult({display: op})
+     } else {
+       this.props.setResult({display: '# of max chars reached'})
+     }
+     
+  },
+  
+  pusher2: function (event) { // to only have 1 operation chained
+    event.preventDefault();
+    var num = event.target.value;
+    var last = op.charAt(op.length-1);
+    
+    if(op.length <= 23){
+    
+       if ((last === "+") || (last === '*') || (last === '-') || (last ==='/') || (last ==='.')) { 
+       } else {
+         op += num;
+         decimal = true;
+         this.props.setResult({display: op})
+       }
+    } else {
+      this.props.setResult({display: '# of max chars reached'})
+    }
+  },
+  
+  pusher3: function (event){
+    event.preventDefault();
+    var num = event.target.value;
+      if (op.length <=23) {
+     op += num;     
+     op = op.replace(/\-+/g, '-')
+        decimal=true;
+      this.props.setResult({display: op})
+     } else {
+       this.props.setResult({display: '# of max chars reached'})
+     }
+
+  },
+  
+  pusher4: function(event){ // function for the '.'
+    event.preventDefault();
+    var num = event.target.value;
+    if (op.length <= 23) {
+    if (decimal) {
+    op += num;
+    this.props.setResult({display: op})
+    decimal = false; // when '.', sets decimal to false 
+    }
+    }
+     else {
+     this.props.setResult({display: '# of max chars reached'})
+     }
+    
+  },
+  
+  result: function(event){ // will execute the operation inside op
+    event.preventDefault();
+    
+    var result = eval(op).toFixed(2);
+    var ind = result.indexOf('.');
+    
+    if (String(result).length <= 11) {
+    this.props.setResult({result: result.slice(0,ind),
+                         decimals: result.slice(ind)})
+    
+    }
+    else {
+      this.props.setResult({result: 'error', decimals:""})
+    }
+  },
+  
+  reset: function(event){
+    event.preventDefault();
+    op=[];
+    decimal = true;
+    this.props.setResult({result: 0, display:0, decimals:'.00'});
+  },
+  
+  delete: function(event){
+    event.preventDefault();
+    var test = false; // to test if im next to delete a '.'
+    op = op.slice(0,-1);
+    this.props.setResult({display: op})
+    console.log(op.indexOf(op.length));
+    if(op.charAt(op.length-1) === '.'){ //i know the next char is a '.'
+      test= true;
+      }
+    if(test && (op.charAt(op.length-2) !== '.')){ // activates decimal when i delete a '.'
+      decimal = true;
+      test = false;
+      console.log(test)
+    }
+    
+  },
+  
+  render: function(){
+    return(
+      <div className="pad">
+        <div className="afterpad">
+          <div className='filter'>
+    <form className="calc">
+    <div>
+      <button onClick={this.reset} value={0}> C </button>
+      <button onClick={this.delete}> DEL </button> 
+      </div>
+      
+    <div>
+    <button onClick={this.pusher} value={1}>1</button> 
+    <button onClick={this.pusher} value={2}>2</button> 
+    <button onClick={this.pusher} value={3}>3</button> 
+    <button onClick={this.pusher2} value='+'>+</button>
+    </div>
+      
+    <div>
+    <button onClick={this.pusher} value={4}>4</button> 
+    <button onClick={this.pusher} value={5}>5</button> 
+    <button onClick={this.pusher} value={6}>6</button> 
+    <button onClick={this.pusher3} value='-'>-</button>
+    </div>
+      
+    <div>
+    <button onClick={this.pusher} value={7}>7</button> 
+    <button onClick={this.pusher} value={8}>8</button> 
+    <button onClick={this.pusher} value={9}>9</button> 
+    <button onClick={this.pusher2} value='*'>*</button>
+    </div>
+      
+    <div className='lastrow'>
+    <button onClick={this.pusher} value={0}>0</button> 
+    <button onClick={this.pusher4} value='.'>.</button> 
+    <button onClick={this.pusher2} value='/'>/</button>
+    </div>
+    </form> 
+          </div>
+        </div>
+                      <button className="return" onClick={this.result}>=</button> 
+        </div>
+    )
+  }
+});
+
+var Display = React.createClass({
+  render: function(){
+    return(
+    <div className="display">
+       {this.props.display} 
+    </div>
+    )
+  }
+});
+
+
+var Result = React.createClass({
+  render: function (){
+    return (
+    <div className='result'>
+    <div> {this.props.result} </div>
+      <div className="dec">{this.props.decimals}</div> 
+       </div>
+    )
+  }
+});
+
+var Footer = React.createClass({
+  render: function(){
+    return(
+    <div className="footer"> Created by Jose L Mortola </div>
+    )
+  }
+});
+
+ReactDOM.render(<Calc />,
+document.getElementById('app')
+);
   </script>
 </html>
